@@ -3,6 +3,7 @@
 from time import sleep
 from retask.exceptions import ConnectionError
 from requests import post
+import json
 from lastuserapp import queue
 from lastuserapp.models import User, AuthToken
 
@@ -10,8 +11,9 @@ from lastuserapp.models import User, AuthToken
 def send(username, notification_uri, message_type):
     """Send Notification to client application
     """
-    post(notification_uri,
-        data={'message': "%s has updated %s" % (username, message_type)})
+    r = post(notification_uri,
+            headers={'Content-Type': 'application/json'},
+            data=json.dumps({'message': "%s has updated %s" % (username, message_type)}))
 
 try:
     queue.connect()
@@ -28,6 +30,6 @@ try:
                             send(user.username, client.notification_uri, task.data['type'])
                     else:
                         send(user.username, client.notification_uri, task.data['type'])
-        sleep(1)
+        sleep(60) # Needs Better timing
 except ConnectionError, e:
     print e
