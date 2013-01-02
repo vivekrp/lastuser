@@ -72,3 +72,10 @@ TIMEZONE_REASON = 'Dates and times will be shown in your preferred timezone'
 ORG_NAME_REASON = u"Your company’s name as it will appear in the URL. Letters, numbers and dashes only"
 ORG_TITLE_REASON = u"Your organization’s given name, preferably without legal suffixes"
 ORG_DESCRIPTION_REASON = u"A few words about your organization (optional). Plain text only"
+
+#: RETASK_SETTINGS
+RETASK_HOST = "localhost"
+RETASK_PORT = 6379
+RETASK_DB = 0
+RETASK_PASSWORD = ""
+RETASK_QUEUE_NAME = ""

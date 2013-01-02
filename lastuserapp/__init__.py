@@ -3,6 +3,8 @@
 __version__ = '0.1'
 
 from flask import Flask
+from retask.task import Task
+from retask.queue import Queue
 from flask.ext.assets import Environment, Bundle
 from coaster.app import configure
 from baseframe import baseframe, baseframe_js, baseframe_css, cookie_js, timezone_js
@@ -39,6 +41,19 @@ css = Bundle(baseframe_css, 'css/app.css',
 assets.register('js_all', js)
 assets.register('css_all', css)
 
+#Initialize Retask
+queue = Queue(app.config['RETASK_QUEUE_NAME'], 
+    config={
+        'host': app.config['RETASK_HOST'],
+        'port': app.config['RETASK_PORT'],
+        'db': app.config['RETASK_DB'],
+        'password': app.config['RETASK_PASSWORD']
+        })
+
+def add_to_queue(item):
+    task = Task(item)
+    queue.connect()
+    queue.enqueue(task)
 
 import lastuserapp.registry
 import lastuserapp.mailclient

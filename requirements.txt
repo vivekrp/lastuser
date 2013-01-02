@@ -13,3 +13,5 @@ https://github.com/jace/flask-wtf/zipball/master
 https://github.com/hasgeek/coaster/zipball/master
 https://github.com/hasgeek/baseframe/zipball/master
 requests
+retask
+redis

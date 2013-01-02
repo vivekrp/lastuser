@@ -4,7 +4,7 @@ from flask import g, flash, render_template, url_for, session, Markup, escape
 from coaster.views import get_next_url, load_model
 from baseframe.forms import render_form, render_redirect, render_delete_sqla, render_message
 
-from lastuserapp import app
+from lastuserapp import app, add_to_queue
 from lastuserapp.models import db, UserEmail, UserEmailClaim, UserPhone, UserPhoneClaim
 from lastuserapp.mailclient import send_email_verify_link
 from lastuserapp.views.helpers import requires_login
@@ -47,6 +47,7 @@ def profile_edit(newprofile=False):
             db.session.commit()
             flash("Your profile has been updated. We sent you an email to confirm your address", category='success')
         else:
+            add_to_queue({'userid': g.user.userid, 'type': 'profile'})
             db.session.commit()
             flash("Your profile has been updated.", category='success')
 

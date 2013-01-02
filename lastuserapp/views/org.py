@@ -4,7 +4,7 @@ from flask import g, render_template, url_for, abort, redirect
 from baseframe.forms import render_form, render_redirect, render_delete_sqla
 from coaster.views import load_model, load_models
 
-from lastuserapp import app
+from lastuserapp import app, add_to_queue
 from lastuserapp.views.helpers import requires_login
 from lastuserapp.forms.org import OrganizationForm, TeamForm
 from lastuserapp.models import db, Organization, Team
@@ -83,6 +83,7 @@ def team_new(org):
         team = Team(org=org)
         form.populate_obj(team)
         db.session.add(team)
+        add_to_queue({'userid': g.user.userid, 'type': 'team'})
         db.session.commit()
         return render_redirect(url_for('org_info', name=org.name), code=303)
     return render_form(form=form, title=u"Create new team", formid='team_new', submit="Create", ajax=False)
@@ -99,6 +100,7 @@ def team_edit(org, team):
     form = TeamForm(obj=team)
     if form.validate_on_submit():
         form.populate_obj(team)
+        add_to_queue({'userid': g.user.userid, 'type': 'team'})
         db.session.commit()
         return render_redirect(url_for('org_info', name=org.name), code=303)
     return render_form(form=form, title=u"Edit team: %s" % team.title, formid='team_edit', submit="Save", ajax=False)
